@@ -17,14 +17,14 @@ h1 {
     -webkit-background-clip: text;
 }
 
-.myDiv {
-    /*border: 5px outset red;*/
-    /*background-color: lightblue;*/
-    text-align: center;
+#myDiv {
+    width: 35%;
+    margin: 0 auto;
+    padding-top: 1vw;
 }
 
 input[type=text], select {
-    width: 15%;
+    width: 240px;
     padding-top: 8px;
     padding-bottom: 8px;
     margin: 8px 0;
@@ -33,12 +33,12 @@ input[type=text], select {
     box-sizing: border-box;
     background-color: white;
     color: black;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
 }
 
 input[type=number], select {
-    width: 7%;
+    width: 120px;
     padding-top: 8px;
     padding-bottom: 8px;
     margin: 8px 0;
@@ -47,12 +47,12 @@ input[type=number], select {
     box-sizing: border-box;
     background-color: white;
     color: black;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
 }
 
 input[type=submit],input[type=button] {
-    width: 5%;
+    width: 70px;
     padding-top: 8px;
     padding-bottom: 8px;
     background-color: green;
@@ -75,4 +75,10 @@ label{
     color: transparent;
     background-clip: padding-box ;
     -webkit-background-clip: text;
+}
+
+#chart{
+    width: 35%;
+    margin: 0 auto;
+    padding-top: 1vw;
 }
