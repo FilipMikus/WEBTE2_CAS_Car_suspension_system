@@ -3,6 +3,7 @@ const userNameButton = document.querySelector("#userNameButton");
 const inputOctaveCode = document.querySelector("#inputOctaveCode");
 const inputOctaveCodeButton = document.querySelector("#inputOctaveCodeButton");
 
+
 userNameButton.addEventListener('click', () => {
     console.log(userName.value);
 })

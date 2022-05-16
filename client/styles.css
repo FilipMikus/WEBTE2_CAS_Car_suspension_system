@@ -1,5 +1,78 @@
-.myDiv {
-    border: 5px outset red;
-    background-color: lightblue;
+html, body {
+    align-items: center;
     text-align: center;
+}
+
+body {
+    background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+    background: linear-gradient(to right, #25c481, #25b7c4);
+}
+
+h1 {
+    font-size: 70px;
+    font-weight: 600;
+    background-image: radial-gradient(circle, #553c9a, #ee4b2b);
+    color: transparent;
+    background-clip: padding-box ;
+    -webkit-background-clip: text;
+}
+
+.myDiv {
+    /*border: 5px outset red;*/
+    /*background-color: lightblue;*/
+    text-align: center;
+}
+
+input[type=text], select {
+    width: 15%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    font-size: 1vw;
+    text-align: center;
+}
+
+input[type=number], select {
+    width: 7%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    font-size: 1vw;
+    text-align: center;
+}
+
+input[type=submit],input[type=button] {
+    width: 5%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: green;
+    color: white;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+input[type=submit]:hover , input[type=button]:hover{
+    background-color: #45a049;
+}
+
+label{
+    font-size: 30px;
+    font-weight: 600;
+    background-image: radial-gradient(circle, #553c9a, #ee4b2b);
+    color: transparent;
+    background-clip: padding-box ;
+    -webkit-background-clip: text;
 }
