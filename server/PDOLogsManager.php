@@ -26,6 +26,9 @@ class PDOLogsManager {
             $statement->setFetchMode(PDO::FETCH_ASSOC);
             $result = $statement->fetchAll();
 
+            if ($result == false)
+                $result = null;
+
             $connection = null;
         } catch (PDOException $exception) {
             return null;
@@ -53,6 +56,9 @@ class PDOLogsManager {
             $statement->execute([$lastInsertId]);
             $statement->setFetchMode(PDO::FETCH_ASSOC);
             $result = $statement->fetch();
+
+            if ($result == false)
+                $result = null;
 
             $connection = null;
         } catch (PDOException $exception) {
