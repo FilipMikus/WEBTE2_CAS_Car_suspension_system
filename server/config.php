@@ -4,5 +4,6 @@ return array(
     "username" => "xmikusf",
     "password" => "kT6gKrVf8NQkk9C",
     "dbmame" => "skuskove_zadanie",
-    "logsEmail" => "filip.mikus11@gmail.com"
+    "logsEmail" => "zaverecne.zadanie@gmail.com"
+    //email password: Webte1278
 );
