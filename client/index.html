@@ -65,8 +65,6 @@
     let x5 = 0;
     let xValues;
     let yValues;
-    let tmpXValues = [];
-    let tmpYValues = [];
 
     const canvas = document.getElementById('myChart');
     const ctx = canvas.getContext('2d');
@@ -90,6 +88,34 @@
             animationDiv.style.display = "none";
         }
     }
+
+    const config = {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,255,0.1)",
+                data: yValues
+            }]
+        },
+
+        options: {
+            legend: {display: false},
+            scales: {}
+
+        }
+
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+
+    const chart = new Chart(ctx, config)
 
     inputOctaveCodeButton.addEventListener('click', () => {
         var checkboxes = document.querySelector("#checkboxes")
@@ -128,26 +154,13 @@
                 yValues = yValues.concat(yArray[i]);
             }
 
+            for( var i = 0; i < yArray.length; i++){
+                await sleep(69);
+                chart.data.labels.push(xValues[i]);
+                chart.data.datasets[0].data.push(yValues[i]);
+                chart.update();
+            }
 
-            new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: xValues,
-                    datasets: [{
-                        fill: false,
-                        lineTension: 0,
-                        backgroundColor: "rgba(0,0,255,1.0)",
-                        borderColor: "rgba(0,0,255,0.1)",
-                        data: yValues
-                    }]
-                },
-
-                options: {
-                    legend: {display: false},
-                    scales: {}
-
-                }
-            });
         }
 
         saveXVariables();
