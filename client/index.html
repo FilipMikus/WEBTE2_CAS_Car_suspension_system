@@ -26,7 +26,7 @@
     <form>
         <label for="inputOctaveCode">Výška prekážky (r):</label>
         <br>
-        <input type="number" max="0.3" min="-0.3" onkeyup="if(parseInt(this.value)>0.4){ this.value =0.3; return false; } else if(parseInt(this.value)<-0.4){ this.value =-0.3; return false; }" id="inputOctaveCode" name="inputOctaveCode">
+        <input type="number" id="inputOctaveCode" name="inputOctaveCode">
         <br>
         <input type="submit" id="inputOctaveCodeButton" value="Potvrď">
     </form>
@@ -34,12 +34,26 @@
     <hr>
     </div>
 
-    <div id="chart">
+    <div id="checkboxes" style="display: none">
+        <label for="chartValue">Zobraz graf:</label>
+        <input type="checkbox" id="chartValue" onclick="myFunction()">
+
+        <label for="animationValue">Zobraz animaciu:</label>
+        <input type="checkbox" id="animationValue" onclick="myFunction1()">
+
+    </div>
+
+    <div id="chart" style="display: none">
         <canvas id="myChart" width="600" height="400"></canvas>
     </div>
 
+    <div id="animation" style="display: none">
+        <h2>LOL</h2>
+    </div>
 
 <script>
+
+
     const inputOctaveCode = document.querySelector("#inputOctaveCode");
     const inputOctaveCodeButton = document.querySelector("#inputOctaveCodeButton");
 
@@ -49,8 +63,37 @@
     let x3 = 0;
     let x4 = 0;
     let x5 = 0;
+    let xValues;
+    let yValues;
+    let tmpXValues = [];
+    let tmpYValues = [];
+
+    const canvas = document.getElementById('myChart');
+    const ctx = canvas.getContext('2d');
+
+    function myFunction() {
+        var chartDiv = document.querySelector("#chart")
+        var chartValue = document.querySelector("#chartValue");
+        if (chartValue.checked == true){
+            chartDiv.style.display = "block";
+        } else {
+            chartDiv.style.display = "none";
+        }
+    }
+
+    function myFunction1() {
+        var animationDiv = document.querySelector("#animation")
+        var animationValue = document.querySelector("#animationValue");
+        if (animationValue.checked == true){
+            animationDiv.style.display = "block";
+        } else {
+            animationDiv.style.display = "none";
+        }
+    }
 
     inputOctaveCodeButton.addEventListener('click', () => {
+        var checkboxes = document.querySelector("#checkboxes")
+        checkboxes.style.display = "block";
         r = inputOctaveCode.value;
 
         let requestBody = { "r": r, "x1": x1, "x2": x2, "x3": x3, "x4": x4, "x5": x5};
@@ -61,9 +104,11 @@
 
             }).then(
                 response => response.json().then(data => ({status: response.status, body: data}))
+
             )
         }
         const resBody = fun();
+
 
         const saveXVariables = async () => {
             const a = await resBody;
@@ -72,11 +117,43 @@
             x3 = a.body.x[500][2];
             x4 = a.body.x[500][3];
             x5 = a.body.x[500][4];
-        };
+
+            let xArray = a.body.t;  // T values
+            let yArray = a.body.y;  // Y values
+
+            for (var i = 0; i < xArray.length; i++) {
+                xValues = xValues.concat(xArray[i]);
+            }
+            for (var i = 0; i < yArray.length; i++) {
+                yValues = yValues.concat(yArray[i]);
+            }
+
+
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(0,0,255,1.0)",
+                        borderColor: "rgba(0,0,255,0.1)",
+                        data: yValues
+                    }]
+                },
+
+                options: {
+                    legend: {display: false},
+                    scales: {}
+
+                }
+            });
+        }
 
         saveXVariables();
 
-        //console.log(x1);
+        xValues = [];
+        yValues = [];
     })
 
 
