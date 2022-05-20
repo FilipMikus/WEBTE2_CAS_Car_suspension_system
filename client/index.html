@@ -115,9 +115,13 @@
     }
 
 
-    const chart = new Chart(ctx, config)
 
+    let chart = new Chart(ctx, config);
     inputOctaveCodeButton.addEventListener('click', () => {
+        chart.data.labels = ([]);
+        chart.data.datasets[0].data = ([]);
+        chart.update();
+
         var checkboxes = document.querySelector("#checkboxes")
         checkboxes.style.display = "block";
         r = inputOctaveCode.value;
@@ -137,6 +141,9 @@
 
 
         const saveXVariables = async () => {
+            chart.clear();
+            xValues = [];
+            yValues = [];
             const a = await resBody;
             x1 = a.body.x[500][0];
             x2 = a.body.x[500][1];
@@ -153,20 +160,22 @@
             for (var i = 0; i < yArray.length; i++) {
                 yValues = yValues.concat(yArray[i]);
             }
+            const button = document.querySelector("#inputOctaveCodeButton");
 
-            for( var i = 0; i < yArray.length; i++){
-                await sleep(69);
+            for(var i = 0; i < yArray.length; i++){
+                button.style.visibility="hidden";
+                await sleep(5);
                 chart.data.labels.push(xValues[i]);
                 chart.data.datasets[0].data.push(yValues[i]);
                 chart.update();
             }
+            button.style.visibility="visible";
 
         }
 
         saveXVariables();
 
-        xValues = [];
-        yValues = [];
+
     })
 
 
