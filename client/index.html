@@ -3,70 +3,100 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Skúškové zadanie</title>
+    <title id="title"></title>
     <script src="script.js" async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../fabric.js"></script>
+    <script src="../fabric.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Skúškové zadanie</h1>
+<h1 id="titleH1"></h1>
 <div id="myDiv">
+    <button id="inputLanguageSwitchButton">EN</button>
+    <hr>
+    <div id="pageDescriptionDiv">
+    </div>
     <hr>
     <br>
     <form>
-        <label for="userName">Meno používateľa:</label>
+        <label id="usernameLabel" for="userName"></label>
         <br>
-        <input type="text" id="userName" name="userName" placeholder="Zadaj meno používateľa...">
+        <input type="text" id="userName" name="userName">
         <br>
-        <input type="submit" id="userNameButton" value="Potvrď">
+        <button id="userNameButton"></button>
     </form>
     <br>
     <hr>
     <br>
     <form>
-        <label for="inputOctaveCode">Výška prekážky (r):</label>
+        <label id="octaveLabel" for="inputOctaveCode"></label>
         <br>
         <input type="number" id="inputOctaveCode" name="inputOctaveCode">
         <br>
-        <input type="submit" id="inputOctaveCodeButton" value="Potvrď">
+        <button id="inputOctaveCodeButton"></button>
     </form>
     <br>
     <hr>
 </div>
 
 <div id="checkboxes" style="display: none">
-    <label for="chartValue">Zobraz graf:</label>
+    <label id="displayChartBox" for="chartValue"></label>
     <input type="checkbox" id="chartValue" onclick="myFunction()">
 
-    <label for="animationValue">Zobraz animaciu:</label>
+    <label id="displayAnimationBox" for="animationValue"></label>
     <input type="checkbox" id="animationValue" onclick="myFunction1()">
 
+</div>
+
+<div id="animation" style="display: none">
+    <canvas id="myAnimation" width="600" height="400"></canvas>
 </div>
 
 <div id="chart" style="display: none">
     <canvas id="myChart" width="600" height="400"></canvas>
 </div>
 
-<div id="animation" style="display: none">
-    <h2>LOL</h2>
-</div>
 
 <div id="apiDescription" style="display: none">
     <div id="forCss">
-        <textarea readonly id="apiDescriptionToPdf">TU BUDE POPIS API</textarea>
+        <textarea readonly id="apiDescriptionToPdf">
+        </textarea>
     </div>
-    <input type="submit" id="savePdf" value="Ulož PDF">
+    <button id="savePdf"></button>
 </div>
-<input type="submit" id="showApiDescription" value="Zobraz popis API služby">
+<button id="showApiDescription"></button>
+
+<div id="PDF" style="display: none">
+</div>
+
 
 <script>
 
-    const inputOctaveCode = document.querySelector("#inputOctaveCode");
+    const inputLanguageSwitchButton = document.querySelector("#inputLanguageSwitchButton");
+    const title = document.querySelector("#title");
+    const titleH1 = document.querySelector("#titleH1");
+    const pageDescriptionDiv = document.querySelector("#pageDescriptionDiv");
+    const userNameLabel = document.querySelector("#usernameLabel");
+    const userNameButton = document.querySelector("#userNameButton");
+    const octaveLabel = document.querySelector("#octaveLabel");
     const inputOctaveCodeButton = document.querySelector("#inputOctaveCodeButton");
+    const displayChartBox = document.querySelector("#displayChartBox");
+    const displayAnimationBox = document.querySelector("#displayAnimationBox");
+    const apiDescriptionToPdf = document.querySelector("#apiDescriptionToPdf");
+    const savePdf = document.querySelector("#savePdf");
+    const pdf = document.querySelector("#PDF");
     const popisButton = document.querySelector("#showApiDescription");
     const divPopis = document.querySelector("#apiDescription");
+
+    var doc = new jsPDF();
+
+    //SK
+    var languagePDF = doc.splitTextToSize("Popis API ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/suspension_system_car/ index.php?token={tokenString} Request type: GET Request body: { \"r\": float, \"x1\": float, \"x2\": float, \"x3\": float, \"x4\": float, \"x5\": float } Response body: { \"y\": [float, ...], \"t\": [float, ...], \"x\": [[float, ...], ...] } Popis: Vrati hodnoty potrebne na vytvorenie animacie a grafu vo formate JSON. V pripade nezadaneho alebo neplatneho tokenu vracia kod 401. Ak doslo k chybe pri spracovani vypoctu na strane CAS vrati kod 400. Inak vracia 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/index.php?token={tokenString} Request type: GET Request body: { \"command\": string } Response body: { \"ans\": string } Popis: Vykona prikaz zadany na CAS v poziadavke a vrati vysledok vo formate JSON. V pripade nezadaneho alebo neplatneho tokenu vracia kod 401. Ak doslo k chybe pri spracovani vypoctu na strane CAS vrati kod 400. Inak vracia 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ logs/index.php Request type: GET Response body: [ { \"id\": long, \"timestamp\": timestamp, \"command\": string, \"status\": enum{\"OK\", ERROR\"} }, ... ] Popis: Ziskanie zoznamu vsetkych zaznamov o vykonanych poziadavkach na server. Ak dojde pri ziskavani zaznamov k chybe, vrati kod 404, inak vrati 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ tokens/index.php Request type: GET Response body: { \"id\": long, \"token\": string } Popis: Vrati novovytvoreny token, spolu s jeho id, ktory ziskal po ulozeni do databazy. V pripade uspesneho vytvorenia vrati kod 201. Ak bola doslo k chybe pri spracovani poziadavky vrati 400. Ak chyba nastala pri vytvarani tokenu a jeho zapisu, vrati 500. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ translations/index.php?language={SK/EN} Request type: GET Response body: [ { \"id\": long, \"element_id\": string, \"language_code\": string, \"translation\": string }, ... ] Popis: Vrati novovytvoreny token, spolu s jeho id, ktory ziskal po ulozeni do databazy. V pripade uspesneho vytvorenia vrati kod 201. Ak bola doslo k chybe pri spracovani poziadavky vrati 400. Ak chyba nastala pri vytvarani tokenu a jeho zapisu, vrati 500."
+        ,185)
 
     let r = 0;
     let x1 = 0;
@@ -76,9 +106,12 @@
     let x5 = 0;
     let xValues;
     let yValues;
+    let carArray = [];
+    let wheelArray = [];
 
     const canvas = document.getElementById('myChart');
     const ctx = canvas.getContext('2d');
+    var animationCanvas = new fabric.Canvas('myAnimation');
 
     popisButton.addEventListener('click', () => {
         if(divPopis.style.display === "none"){
@@ -89,12 +122,9 @@
         }
     })
 
-    //PDF export
-    var doc = new jsPDF();
+    // PDF export
     $('#savePdf').click(function () {
-        doc.fromHTML($('#apiDescriptionToPdf').html(), 15, 15, {
-            'width': 700
-        });
+        doc.text(languagePDF,15, 10);
         doc.save('api_documentation.pdf');
     });
 
@@ -124,16 +154,24 @@
         data: {
             labels: xValues,
             datasets: [{
+                label: "car",
                 fill: false,
                 lineTension: 0,
-                backgroundColor: "rgba(0,0,255,1.0)",
-                borderColor: "rgba(0,0,255,0.1)",
-                data: yValues
-            }]
+                backgroundColor: "rgba(26, 98, 37, 0.8)",
+                borderColor: "rgba(38, 255, 72, 1)",
+                data: wheelArray
+            },{
+                label: "wheel",
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(24, 81, 180, 1)",
+                borderColor: "rgba(0, 231, 255, 1)",
+                data: carArray
+            }],
         },
 
         options: {
-            legend: {display: false},
+            legend: {display: true},
             scales: {}
 
         }
@@ -144,12 +182,11 @@
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-
-
     let chart = new Chart(ctx, config);
     inputOctaveCodeButton.addEventListener('click', () => {
         chart.data.labels = ([]);
         chart.data.datasets[0].data = ([]);
+        chart.data.datasets[1].data = ([]);
         chart.update();
 
         var checkboxes = document.querySelector("#checkboxes")
@@ -169,11 +206,13 @@
         }
         const resBody = fun();
 
-
         const saveXVariables = async () => {
             chart.clear();
+            animationCanvas.clear();
             xValues = [];
             yValues = [];
+            carArray = [];
+            wheelArray = [];
             const a = await resBody;
             x1 = a.body.x[500][0];
             x2 = a.body.x[500][1];
@@ -181,8 +220,15 @@
             x4 = a.body.x[500][3];
             x5 = a.body.x[500][4];
 
+            let car = new fabric.Rect({top : 150, left : 230, width : 60, height : 20, fill : 'red'});
+            let innerCar = new fabric.Rect({top : 150, left : 230, width : 60, height : 20, fill : 'red'});
+            let wheel = new fabric.Circle({top : 250, left : 225,  radius:50, fill : 'black'});
+            let innerWheel = new fabric.Circle({top : 250, left : 230,  radius:30, fill : 'silver'});
+
             let xArray = a.body.t;  // T values
             let yArray = a.body.y;  // Y values
+
+            let animationArray = a.body.x;
 
             for (var i = 0; i < xArray.length; i++) {
                 xValues = xValues.concat(xArray[i]);
@@ -190,24 +236,46 @@
             for (var i = 0; i < yArray.length; i++) {
                 yValues = yValues.concat(yArray[i]);
             }
+            for (var i = 0; i < animationArray.length; i++) { // CAR = WHEEL
+                carArray = carArray.concat(animationArray[i][0]);
+            }
+            for (var i = 0; i < animationArray.length; i++) { // WHEEL = CAR
+                wheelArray = wheelArray.concat(animationArray[i][2]);
+            }
+            console.log(carArray);
+            console.log(wheelArray);
             const button = document.querySelector("#inputOctaveCodeButton");
 
             for(var i = 0; i < yArray.length; i++){
+                car = new fabric.Rect({top : 130+100*carArray[i], left : 222.5, width : 130, height : 20, fill : 'black',lockMovementX: true, lockMovementY: true,lockScalingX: true, lockScalingY: true});
+                innerCar = new fabric.Rect({top : 132.5+100*carArray[i], left : 226, width : 123, height : 15, fill : 'red',lockMovementX: true, lockMovementY: true,lockScalingX: true, lockScalingY: true});
+                animationCanvas.add(car);
+                animationCanvas.add(innerCar);
+                wheel = new fabric.Circle({top : 230+10000*wheelArray[i], left : 240, radius:50, fill : 'black',lockMovementX: true, lockMovementY: true,lockScalingX: true, lockScalingY: true});
+                innerWheel = new fabric.Circle({top : 245+10000*wheelArray[i], left : 255,  radius:35, fill : 'silver', lockMovementX: true, lockMovementY: true,lockScalingX: true, lockScalingY: true});
+                animationCanvas.add(wheel);
+                animationCanvas.add(innerWheel);
+
                 button.style.visibility="hidden";
                 await sleep(5);
                 chart.data.labels.push(xValues[i]);
-                chart.data.datasets[0].data.push(yValues[i]);
+                chart.data.datasets[0].data.push(wheelArray[i]);
+                chart.data.datasets[1].data.push(carArray[i]);
                 chart.update();
+
+                if(i!==500){
+                    animationCanvas.remove(car);
+                    animationCanvas.remove(wheel);
+                    animationCanvas.remove(innerWheel);
+                    animationCanvas.remove(innerCar);
+                }
             }
             button.style.visibility="visible";
 
         }
 
         saveXVariables();
-
-
     })
-
 
 </script>
 </body>
