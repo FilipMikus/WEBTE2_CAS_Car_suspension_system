@@ -10,6 +10,8 @@ $databaseName = $config["dbname"];
 
 if (isset($_GET["token"])) {
     $pdoTokensManager = new PDOTokensManager($serverName, $userName, $userPassword, $databaseName);
+    // TODO logs manager init
+    // TODO email handler init
     if ($pdoTokensManager->readByToken($_GET["token"]) != null) {
         $requestBody = json_decode(file_get_contents('php://input'), true);
         if (isset($requestBody["command"])) {

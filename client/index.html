@@ -6,11 +6,13 @@
     <title>Skúškové zadanie</title>
     <script src="script.js" async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Skúškové zadanie</h1>
-    <div id="myDiv">
+<h1>Skúškové zadanie</h1>
+<div id="myDiv">
     <hr>
     <br>
     <form>
@@ -32,30 +34,39 @@
     </form>
     <br>
     <hr>
+</div>
+
+<div id="checkboxes" style="display: none">
+    <label for="chartValue">Zobraz graf:</label>
+    <input type="checkbox" id="chartValue" onclick="myFunction()">
+
+    <label for="animationValue">Zobraz animaciu:</label>
+    <input type="checkbox" id="animationValue" onclick="myFunction1()">
+
+</div>
+
+<div id="chart" style="display: none">
+    <canvas id="myChart" width="600" height="400"></canvas>
+</div>
+
+<div id="animation" style="display: none">
+    <h2>LOL</h2>
+</div>
+
+<div id="apiDescription" style="display: none">
+    <div id="forCss">
+        <textarea readonly id="apiDescriptionToPdf">TU BUDE POPIS API</textarea>
     </div>
-
-    <div id="checkboxes" style="display: none">
-        <label for="chartValue">Zobraz graf:</label>
-        <input type="checkbox" id="chartValue" onclick="myFunction()">
-
-        <label for="animationValue">Zobraz animaciu:</label>
-        <input type="checkbox" id="animationValue" onclick="myFunction1()">
-
-    </div>
-
-    <div id="chart" style="display: none">
-        <canvas id="myChart" width="600" height="400"></canvas>
-    </div>
-
-    <div id="animation" style="display: none">
-        <h2>LOL</h2>
-    </div>
+    <input type="submit" id="savePdf" value="Ulož PDF">
+</div>
+<input type="submit" id="showApiDescription" value="Zobraz popis API služby">
 
 <script>
 
-
     const inputOctaveCode = document.querySelector("#inputOctaveCode");
     const inputOctaveCodeButton = document.querySelector("#inputOctaveCodeButton");
+    const popisButton = document.querySelector("#showApiDescription");
+    const divPopis = document.querySelector("#apiDescription");
 
     let r = 0;
     let x1 = 0;
@@ -68,6 +79,25 @@
 
     const canvas = document.getElementById('myChart');
     const ctx = canvas.getContext('2d');
+
+    popisButton.addEventListener('click', () => {
+        if(divPopis.style.display === "none"){
+            divPopis.style.display = "block";
+        }
+        else{
+            divPopis.style.display = "none";
+        }
+    })
+
+    //PDF export
+    var doc = new jsPDF();
+    $('#savePdf').click(function () {
+        doc.fromHTML($('#apiDescriptionToPdf').html(), 15, 15, {
+            'width': 700
+        });
+        doc.save('api_documentation.pdf');
+    });
+
 
     function myFunction() {
         var chartDiv = document.querySelector("#chart")
