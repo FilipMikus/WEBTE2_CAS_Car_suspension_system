@@ -64,6 +64,19 @@ input[type=submit],input[type=button] {
     text-align: center;
 }
 
+button {
+    width: 70px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: green;
+    color: white;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
 input[type=submit]:hover , input[type=button]:hover{
     background-color: #45a049;
 }
@@ -169,4 +182,20 @@ label{
 
 #showApiDescription:hover{
     background-color: #45a049;
+}
+
+#animation{
+    width: 35%;
+    margin: 0 auto;
+    padding-top: 1vw;
+    pointer-events: none;
+}
+
+#myAnimation{
+    border: 5px outset blue;
+    pointer-events: none;
+}
+
+.canvas-container{
+    margin: 0 auto;
 }

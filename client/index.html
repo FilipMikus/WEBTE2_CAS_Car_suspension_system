@@ -121,7 +121,59 @@
         })
 
     inputLanguageSwitchButton.addEventListener("click", () => {
-       // TODO: language switch
+        if (inputLanguageSwitchButton.textContent == "EN") {
+            inputLanguageSwitchButton.textContent = "SK";
+            fetch('https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/translations/index.php?language=EN',
+                {method: 'get'}
+            )
+                .then(response => response.json())
+                .then(result => {
+                    title.textContent = findJSONTranslation(result, "title");
+                    titleH1.textContent = findJSONTranslation(result, "titleH1");
+                    pageDescriptionDiv.textContent = findJSONTranslation(result, "pageDescriptionDiv");
+                    userNameLabel.textContent = findJSONTranslation(result, "usernameLabel");
+                    userNameButton.textContent = findJSONTranslation(result, "userNameButton");
+                    octaveLabel.textContent = findJSONTranslation(result, "octaveLabel");
+                    inputOctaveCodeButton.textContent = findJSONTranslation(result, "inputOctaveCodeButton");
+                    displayChartBox.textContent = findJSONTranslation(result, "displayChartBox");
+                    displayAnimationBox.textContent = findJSONTranslation(result, "displayAnimationBox");
+                    apiDescriptionToPdf.textContent = findJSONTranslation(result, "apiDescriptionToPdf");
+                    savePdf.textContent = findJSONTranslation(result, "savePdf");
+                    pdf.textContent = findJSONTranslation(result, "PDF");
+                    popisButton.textContent = findJSONTranslation(result, "showApiDescription");
+
+                    doc = new jsPDF();
+                    languagePDF = doc.splitTextToSize("API description ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/suspension_system_car/ index.php?token={tokenString} Request type: GET Request body: { \"r\": float, \"x1\": float, \"x2\": float, \"x3\": float, \"x4\": float, \"x5\": float } Response body: { \"y\": [float, ...], \"t\": [float, ...], \"x\": [[float, ...], ...] } Description: Returns values needed to create an animation and a graph in JSON format. In case of not entered token, or invalid token, returns 401. If an error occurred during performing calculation on CAS, code 400 is returned. Otherwise 200 response is returned. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/index.php?token={tokenString} Request type: GET Request body: { \"command\": string } Response body: { \"ans\": string } Description: Execute the entered command for CAS in the request and returns the result in JSON format. In case of not entered token, or invalid token, returns 401. If an error occurred during performing calculation on CAS, code 400 is returned. Otherwise 200 response is returned. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ logs/index.php Request type: GET Response body: [ { \"id\": long, \"timestamp\": timestamp, \"command\": string, \"status\": enum{\"OK\", ERROR\"} }, ... ] Description: Obtain list of all logs about executed commands on server. If an error occurs during obtaining list of logs, code 404 is returned, else returns 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ tokens/index.php Request type: GET Response body: { \"id\": long, \"token\": string } Description: Returns newly-created token with its id assigned after being stored to the database. If the token is created successfully, it returns code 201. If an error occurs during handling the request, 400 code is returned. If an error occurs throughout creating a token or its storing, it returns 500. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ translations/index.php?language={SK/EN} Request type: GET Response body: [ { \"id\": long, \"element_id\": string, \"language_code\": string, \"translation\": string }, ... ] Description: Returns list of database records representing site elements. If an error occurs, code 404 is returned, else 200 is returned."
+                        , 185);
+                })
+        } else if (inputLanguageSwitchButton.textContent == "SK") {
+            inputLanguageSwitchButton.textContent = "EN";
+            fetch('https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/translations/index.php?language=SK',
+                {method: 'get'}
+            )
+                .then(response => response.json())
+                .then(result => {
+                    title.textContent = findJSONTranslation(result, "title");
+                    titleH1.textContent = findJSONTranslation(result, "titleH1");
+                    pageDescriptionDiv.textContent = findJSONTranslation(result, "pageDescriptionDiv");
+                    userNameLabel.textContent = findJSONTranslation(result, "usernameLabel");
+                    userNameButton.textContent = findJSONTranslation(result, "userNameButton");
+                    octaveLabel.textContent = findJSONTranslation(result, "octaveLabel");
+                    inputOctaveCodeButton.textContent = findJSONTranslation(result, "inputOctaveCodeButton");
+                    displayChartBox.textContent = findJSONTranslation(result, "displayChartBox");
+                    displayAnimationBox.textContent = findJSONTranslation(result, "displayAnimationBox");
+                    console.log(findJSONTranslation(result, "apiDescriptionToPdf"))
+                    apiDescriptionToPdf.textContent = findJSONTranslation(result, "apiDescriptionToPdf");
+                    savePdf.textContent = findJSONTranslation(result, "savePdf");
+                    pdf.textContent = findJSONTranslation(result, "PDF");
+                    popisButton.textContent = findJSONTranslation(result, "showApiDescription");
+
+                    doc = new jsPDF();
+                    languagePDF=doc.splitTextToSize("Popis API ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/suspension_system_car/ index.php?token={tokenString} Request type: GET Request body: { \"r\": float, \"x1\": float, \"x2\": float, \"x3\": float, \"x4\": float, \"x5\": float } Response body: { \"y\": [float, ...], \"t\": [float, ...], \"x\": [[float, ...], ...] } Popis: Vrati hodnoty potrebne na vytvorenie animacie a grafu vo formate JSON. V pripade nezadaneho alebo neplatneho tokenu vracia kod 401. Ak doslo k chybe pri spracovani vypoctu na strane CAS vrati kod 400. Inak vracia 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/index.php?token={tokenString} Request type: GET Request body: { \"command\": string } Response body: { \"ans\": string } Popis: Vykona prikaz zadany na CAS v poziadavke a vrati vysledok vo formate JSON. V pripade nezadaneho alebo neplatneho tokenu vracia kod 401. Ak doslo k chybe pri spracovani vypoctu na strane CAS vrati kod 400. Inak vracia 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ logs/index.php Request type: GET Response body: [ { \"id\": long, \"timestamp\": timestamp, \"command\": string, \"status\": enum{\"OK\", ERROR\"} }, ... ] Popis: Ziskanie zoznamu vsetkych zaznamov o vykonanych poziadavkach na server. Ak dojde pri ziskavani zaznamov k chybe, vrati kod 404, inak vrati 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ tokens/index.php Request type: GET Response body: { \"id\": long, \"token\": string } Popis: Vrati novovytvoreny token, spolu s jeho id, ktory ziskal po ulozeni do databazy. V pripade uspesneho vytvorenia vrati kod 201. Ak bola doslo k chybe pri spracovani poziadavky vrati 400. Ak chyba nastala pri vytvarani tokenu a jeho zapisu, vrati 500. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ translations/index.php?language={SK/EN} Request type: GET Response body: [ { \"id\": long, \"element_id\": string, \"language_code\": string, \"translation\": string }, ... ] Popis: Vrati novovytvoreny token, spolu s jeho id, ktory ziskal po ulozeni do databazy. V pripade uspesneho vytvorenia vrati kod 201. Ak bola doslo k chybe pri spracovani poziadavky vrati 400. Ak chyba nastala pri vytvarani tokenu a jeho zapisu, vrati 500."
+                        ,185)
+
+                })
+        }
     });
 
     let r = 0;
