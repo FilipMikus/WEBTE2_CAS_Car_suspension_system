@@ -75,6 +75,9 @@
 
 
 <script>
+    function  findJSONTranslation (jsonArray, elementId) {
+        return jsonArray.find(obj => obj.element_id === elementId).translation;
+    }
 
     const inputLanguageSwitchButton = document.querySelector("#inputLanguageSwitchButton");
     const title = document.querySelector("#title");
@@ -97,6 +100,29 @@
     //SK
     var languagePDF = doc.splitTextToSize("Popis API ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/suspension_system_car/ index.php?token={tokenString} Request type: GET Request body: { \"r\": float, \"x1\": float, \"x2\": float, \"x3\": float, \"x4\": float, \"x5\": float } Response body: { \"y\": [float, ...], \"t\": [float, ...], \"x\": [[float, ...], ...] } Popis: Vrati hodnoty potrebne na vytvorenie animacie a grafu vo formate JSON. V pripade nezadaneho alebo neplatneho tokenu vracia kod 401. Ak doslo k chybe pri spracovani vypoctu na strane CAS vrati kod 400. Inak vracia 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ computer_aided_system/index.php?token={tokenString} Request type: GET Request body: { \"command\": string } Response body: { \"ans\": string } Popis: Vykona prikaz zadany na CAS v poziadavke a vrati vysledok vo formate JSON. V pripade nezadaneho alebo neplatneho tokenu vracia kod 401. Ak doslo k chybe pri spracovani vypoctu na strane CAS vrati kod 400. Inak vracia 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ logs/index.php Request type: GET Response body: [ { \"id\": long, \"timestamp\": timestamp, \"command\": string, \"status\": enum{\"OK\", ERROR\"} }, ... ] Popis: Ziskanie zoznamu vsetkych zaznamov o vykonanych poziadavkach na server. Ak dojde pri ziskavani zaznamov k chybe, vrati kod 404, inak vrati 200. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ tokens/index.php Request type: GET Response body: { \"id\": long, \"token\": string } Popis: Vrati novovytvoreny token, spolu s jeho id, ktory ziskal po ulozeni do databazy. V pripade uspesneho vytvorenia vrati kod 201. Ak bola doslo k chybe pri spracovani poziadavky vrati 400. Ak chyba nastala pri vytvarani tokenu a jeho zapisu, vrati 500. ----------------------------------------------------------------------------------------------- URL: https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/ translations/index.php?language={SK/EN} Request type: GET Response body: [ { \"id\": long, \"element_id\": string, \"language_code\": string, \"translation\": string }, ... ] Popis: Vrati novovytvoreny token, spolu s jeho id, ktory ziskal po ulozeni do databazy. V pripade uspesneho vytvorenia vrati kod 201. Ak bola doslo k chybe pri spracovani poziadavky vrati 400. Ak chyba nastala pri vytvarani tokenu a jeho zapisu, vrati 500."
         ,185)
+    fetch('https://site131.webte.fei.stuba.sk/skuskove_zadanie/server/translations/index.php?language=SK',
+        {method: 'get'}
+    )
+        .then(response => response.json())
+        .then(result => {
+            title.textContent = findJSONTranslation(result, "title");
+            titleH1.textContent = findJSONTranslation(result, "titleH1");
+            pageDescriptionDiv.textContent = findJSONTranslation(result, "pageDescriptionDiv");
+            userNameLabel.textContent = findJSONTranslation(result, "usernameLabel");
+            userNameButton.textContent = findJSONTranslation(result, "userNameButton");
+            octaveLabel.textContent = findJSONTranslation(result, "octaveLabel");
+            inputOctaveCodeButton.textContent = findJSONTranslation(result, "inputOctaveCodeButton");
+            displayChartBox.textContent = findJSONTranslation(result, "displayChartBox");
+            displayAnimationBox.textContent = findJSONTranslation(result, "displayAnimationBox");
+            apiDescriptionToPdf.textContent = findJSONTranslation(result, "apiDescriptionToPdf");
+            savePdf.textContent = findJSONTranslation(result, "savePdf");
+            pdf.textContent = findJSONTranslation(result, "PDF");
+            popisButton.textContent = findJSONTranslation(result, "showApiDescription");
+        })
+
+    inputLanguageSwitchButton.addEventListener("click", () => {
+       // TODO: language switch
+    });
 
     let r = 0;
     let x1 = 0;
