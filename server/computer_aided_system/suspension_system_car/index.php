@@ -2,7 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 require_once "../../PDOTokensManager.php";
 require_once "../../PDOLogsManager.php";
-
+require_once "FilesHandler.php";
 $config = require_once "../../config.php";
 $serverName = $config["host"];
 $userName = $config["username"];
@@ -11,8 +11,10 @@ $databaseName = $config["dbname"];
 
 if (isset($_GET["token"])) {
     $pdoTokensManager = new PDOTokensManager($serverName, $userName, $userPassword, $databaseName);
-    // TODO logs manager init
-    // TODO email handler init
+
+    $pdoLogsManager = new PDOLogsManager($serverName, $userName, $userPassword, $databaseName);
+
+    $fileHandler = new FilesHandler();
     if ($pdoTokensManager->readByToken($_GET["token"]) != null) {
         $requestBody = json_decode(file_get_contents('php://input'), true);
         if (isset($requestBody["r"]) & isset($requestBody["x1"]) & isset($requestBody["x2"]) &
@@ -22,16 +24,19 @@ if (isset($_GET["token"])) {
             $commandOutputJSON = str_replace("ans = ", "", $commandOutputOctave);
             if ($commandOutputOctave != null) {
                 header("HTTP/1.1 200 OK");
-                // TODO Successful command to DB logs
-                // TODO Write logs to .csv
-                // TODO Write logs to e-mail
+
+                $pdoLogsManager->createLog($commandOctave, "OK");
+                $readLogs = $pdoLogsManager->readAllLogs();
                 $commandOutputJSON = str_replace("ans = ", "", $commandOutputOctave);
+                $fileHandler->exportLogsToCsv($readLogs,"logs_export.csv");
+                $fileHandler->sendLogsToEmail("logs_export.csv");
                 echo $commandOutputJSON;
             } else {
                 header("HTTP/1.1 400 Bad Request");
-                // TODO Unsuccessful command to DB logs
-                // TODO Write logs to .csv
-                // TODO Write logs to e-mail
+                $pdoLogsManager->createLog($commandOctave, "ERROR");
+                $readLogs = $pdoLogsManager->readAllLogs();
+                $fileHandler->exportLogsToCsv($readLogs, "logs_export.csv");
+                $fileHandler->sendLogsToEmail("logs_export.csv");
                 echo "{\"ans\":\"error\"}";
             }
         } else {
